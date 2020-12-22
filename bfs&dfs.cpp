@@ -1,7 +1,7 @@
 #include<iostream>
 /*
-Author: ³Â²®Ç®
-Topic: BFS¡¢DFSÊµÏÖ 
+Author: SliverChen
+Topic: BFSã€DFSå®ç° 
 */
 #include<cstring>
 #include<vector>
@@ -10,20 +10,20 @@ Topic: BFS¡¢DFSÊµÏÖ
 using namespace std;
 #define MAX 200
 
-bool vis[MAX];  //¼ÇÂ¼ÒÑ¾­×ß¹ıµÄµã
+bool vis[MAX];  //è®°å½•å·²ç»èµ°è¿‡çš„ç‚¹
 
 
 
 //int edge[MAX][MAX];
-//µÚÒ»ÖÖÕâÖÖĞ§ÂÊµÍ£¬³¬¹ı1000¸öÊ±¼äºÍ¿Õ¼ä¶¼²»ÔÊĞí 
+//ç¬¬ä¸€ç§è¿™ç§æ•ˆç‡ä½ï¼Œè¶…è¿‡1000ä¸ªæ—¶é—´å’Œç©ºé—´éƒ½ä¸å…è®¸ 
 
 
 //vector<int> edge[100];
-//edge[3].push_back(6)    //´ú±íÒ»Ìõ´Ó3µ½6µÄ±ß 
-//µÚ¶şÖÖ½ÏÎª³£ÓÃ 
+//edge[3].push_back(6)    //ä»£è¡¨ä¸€æ¡ä»3åˆ°6çš„è¾¹ 
+//ç¬¬äºŒç§è¾ƒä¸ºå¸¸ç”¨ 
 
 /*
-µÚÈıÖÖ½ÏÄÑÀí½â 
+ç¬¬ä¸‰ç§è¾ƒéš¾ç†è§£ 
 struct Edge
 {
 	int to,next;
@@ -48,11 +48,11 @@ void addEdge(int u,int v)
 */
 
 
-//BFSÊµÏÖ(ÀûÓÃ¶ÓÁĞ´æ·ÅÏàÁ¬µÄµã)
-vector<int> E[100];  //¼ÇÂ¼±ß 
-void BFS(int root)   //N¸öµãµÄÍ¼£¬´Óroot¿ªÊ¼ËÑË÷
+//BFSå®ç°(åˆ©ç”¨é˜Ÿåˆ—å­˜æ”¾ç›¸è¿çš„ç‚¹)
+vector<int> E[100];  //è®°å½•è¾¹ 
+void BFS(int root)   //Nä¸ªç‚¹çš„å›¾ï¼Œä»rootå¼€å§‹æœç´¢
 {
-	queue<int> que;             //³õÊ¼»¯ 
+	queue<int> que;             //åˆå§‹åŒ– 
 	memset(vis,0,sizeof(vis));
 	vis[root] = 1;
 	que.push(root);
@@ -64,7 +64,7 @@ void BFS(int root)   //N¸öµãµÄÍ¼£¬´Óroot¿ªÊ¼ËÑË÷
 		que.pop();
 		
 		len = E[u].size();
-		for(int i=0;i<len;i++) //ÕÒµ½ºÍuÏàÁ¬µÄËùÓĞµã£¬´æ·Åµ½queÖĞ 
+		for(int i=0;i<len;i++) //æ‰¾åˆ°å’Œuç›¸è¿çš„æ‰€æœ‰ç‚¹ï¼Œå­˜æ”¾åˆ°queä¸­ 
 			if(vis[E[u][i]]==0)
 			{
 				vis[E[u][i]]=1;
@@ -75,8 +75,8 @@ void BFS(int root)   //N¸öµãµÄÍ¼£¬´Óroot¿ªÊ¼ËÑË÷
 	
 } 
 
-//DFSÊµÏÖ £¨¿ÉÒÔÓÃÕ»£¬ÒòÎª·ûºÏÏÈ½øÏÈ³ö£»Ò²¿ÉÒÔÓÃº¯Êıµİ¹é£©
-//º¯Êıµİ¹é  Ğ§ÂÊ½ÏµÍ£¬²î´í²»ÈİÒ× 
+//DFSå®ç° ï¼ˆå¯ä»¥ç”¨æ ˆï¼Œå› ä¸ºç¬¦åˆå…ˆè¿›å…ˆå‡ºï¼›ä¹Ÿå¯ä»¥ç”¨å‡½æ•°é€’å½’ï¼‰
+//å‡½æ•°é€’å½’  æ•ˆç‡è¾ƒä½ï¼Œå·®é”™ä¸å®¹æ˜“ 
 void DFS(int root)
 {
 	int len;
@@ -89,10 +89,10 @@ void DFS(int root)
 			DFS(E[root][i]);
 }
 
-//Õ»ÊµÏÖ 
+//æ ˆå®ç° 
 void DFS_stack(int root)
 {
-	stack<int> s;              //³õÊ¼»¯ 
+	stack<int> s;              //åˆå§‹åŒ– 
 	memset(vis,0,sizeof(vis));
 	vis[root] = 1;
 	s.push(root);
