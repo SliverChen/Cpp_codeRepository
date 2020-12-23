@@ -1,6 +1,6 @@
 /*
 Author:SliverChen
-Topic: leetCode387-×Ö·û´®ÖÐµÄµÚÒ»¸öÎ¨Ò»×Ö·û 
+Topic: leetCode387-å­—ç¬¦ä¸²ä¸­çš„ç¬¬ä¸€ä¸ªå”¯ä¸€å­—ç¬¦ 
 date: 2020/12/23
 */
 class Solution {
@@ -10,10 +10,10 @@ public:
         vector<int> out(200,0);
         string::iterator iter = s.begin();
         for(;iter<s.end();iter++)
-            out[int(*iter)]++;  //¼ÇÂ¼³öÏÖ´ÎÊý 
+            out[int(*iter)]++;  //è®°å½•å‡ºçŽ°æ¬¡æ•° 
         for(iter=s.begin();iter<s.end();iter++,count++)
         {
-            if(out[int(*iter)]==1)  //´Ó×óÍùÓÒ±éÀúµÃµ½µÚÒ»¸öÎ¨Ò»³öÏÖµÄ×Ö·û 
+            if(out[int(*iter)]==1)  //ä»Žå·¦å¾€å³éåŽ†å¾—åˆ°ç¬¬ä¸€ä¸ªå”¯ä¸€å‡ºçŽ°çš„å­—ç¬¦ 
             {
                 return count;
             }
