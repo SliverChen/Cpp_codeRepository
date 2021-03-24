@@ -30,6 +30,8 @@ Out:[1]
 #include <list>
 using namespace std;
 
+
+//链表的节点结构
 template <class T>
 struct LinkNode
 {
@@ -51,22 +53,20 @@ template <class T>
 class myList
 {
 public:
+	//构造函数(无参)
 	myList()
 	{
 		head->next = NULL;
 		size = 0;
 	}
 
-	int getSize()
-	{
-		return size;
-	}
-
+	//获取链表头节点
 	LinkNode<T> *getHead()
 	{
 		return head;
 	}
 
+	//将元素插入到链表的最后的位置
 	void push_back(T element)
 	{
 		LinkNode<T> *temp = head;
@@ -79,6 +79,7 @@ public:
 		size++;
 	}
 
+	//删除链表的最后一个节点
 	void pop_back()
 	{
 		LinkNode<T> *temp = head;
@@ -90,6 +91,7 @@ public:
 		size--;
 	}
 
+	//打印链表
 	void printList()
 	{
 		LinkNode<T> *temp = head;
@@ -101,6 +103,72 @@ public:
 		cout << endl;
 	}
 
+	//在对应索引之前插入节点
+	bool Insert(T element, int index)
+	{
+		LinkNode<T> *preNode = head;
+		if (index <= 0 || index > size)
+		{
+			printf("index out of range,which index is %d, size is %d \n",index,size);
+			return false;
+		}
+		for (int i = 0; i < index-1; i++)
+		{
+			preNode = preNode->next;
+		}
+		LinkNode<T> *newNode = new LinkNode<T>(element);
+		newNode->next = preNode->next;
+		preNode->next = newNode;
+		size++;
+		return true;
+	}
+
+	//删除索引对应的节点
+	bool Remove(int index)
+	{
+		LinkNode<T> *preNode = head;
+		if(index <=0 || index > size)
+		{
+			printf("index out of range, which index is %d, size is %d \n", index, size);
+			return false;
+		}
+		for (int i = 0; i < index - 1;i++)
+		{
+			preNode = preNode->next;
+		}
+		LinkNode<T> *RemoveNode = preNode->next;
+		preNode->next = RemoveNode->next;
+		delete RemoveNode;
+		size--;
+		return true;
+	}
+
+	//清空链表操作
+	bool Clear()
+	{
+		delete head->next;
+		head->next = new LinkNode<T>();
+		size = 0;
+		return true;
+	}
+
+	//获取链表大小
+	int GetListSize()
+	{
+		return size;
+	}
+
+	//反转整个链表的节点  例：1->2->3   ----->     3->2->1
+	void ReverseWholeList()
+	{
+
+	}
+	//反转链表的部分节点  例：1->2->3->4  left:2  right:3    ----->  1->3->2->4
+	void ReversePartOfList(int leftIndex,int rightIndex)
+	{
+
+	}
+
 private:
 	LinkNode<T> *head;
 	int size;
@@ -108,14 +176,8 @@ private:
 
 int main()
 {
-	myList<int> mylist;
-	mylist.push_back(1);
-	mylist.push_back(3);
-	mylist.push_back(5);
-	mylist.push_back(6);
-	mylist.push_back(7);
-	mylist.push_back(8);
-	mylist.printList();
+
+
 	system("pause");
 	return 0;
 }
