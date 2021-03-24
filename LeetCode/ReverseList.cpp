@@ -161,7 +161,19 @@ public:
 	//反转整个链表的节点  例：1->2->3   ----->     3->2->1
 	void ReverseWholeList()
 	{
-
+		LinkNode<T> *preNode = NULL;
+		LinkNode<T> *curNode = head->next;
+		LinkNode<T> *tempNode;
+		while(curNode)
+		{
+			tempNode = curNode->next;
+			printf("make value %d reverse\n", curNode->val);
+			curNode->next = preNode;
+			preNode = curNode;
+			curNode = tempNode;
+		}
+		curNode = head;
+		curNode->next = preNode;
 	}
 	//反转链表的部分节点  例：1->2->3->4  left:2  right:3    ----->  1->3->2->4
 	void ReversePartOfList(int leftIndex,int rightIndex)
@@ -177,7 +189,15 @@ private:
 int main()
 {
 
-
+	myList<int> mylist;
+	mylist.push_back(1);
+	mylist.push_back(2);
+	mylist.push_back(3);
+	mylist.push_back(4);
+	mylist.push_back(5);
+	mylist.printList();
+	mylist.ReverseWholeList();
+	mylist.printList();
 	system("pause");
 	return 0;
 }
