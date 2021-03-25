@@ -160,7 +160,6 @@ public:
 	//反转整个链表的节点  例：1->2->3   ----->     3->2->1
 	void ReverseWholeList()
 	{
-		LinkNode<T> *preNode = NULL;
 		LinkNode<T> *curNode = head->next;
 		LinkNode<T> *tempNode;
 		while (curNode)
