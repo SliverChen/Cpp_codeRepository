@@ -162,6 +162,7 @@ public:
 	{
 		LinkNode<T> *curNode = head->next;
 		LinkNode<T> *tempNode;
+		LinkNode<T> *preNode = NULL;
 		while (curNode)
 		{
 			tempNode = curNode->next;
