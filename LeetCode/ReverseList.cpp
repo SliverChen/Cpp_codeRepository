@@ -30,7 +30,6 @@ Out:[1]
 #include <list>
 using namespace std;
 
-
 //链表的节点结构
 template <class T>
 struct LinkNode
@@ -109,10 +108,10 @@ public:
 		LinkNode<T> *preNode = head;
 		if (index <= 0 || index > size)
 		{
-			printf("index out of range,which index is %d, size is %d \n",index,size);
+			printf("index out of range,which index is %d, size is %d \n", index, size);
 			return false;
 		}
-		for (int i = 0; i < index-1; i++)
+		for (int i = 0; i < index - 1; i++)
 		{
 			preNode = preNode->next;
 		}
@@ -127,12 +126,12 @@ public:
 	bool Remove(int index)
 	{
 		LinkNode<T> *preNode = head;
-		if(index <=0 || index > size)
+		if (index <= 0 || index > size)
 		{
 			printf("index out of range, which index is %d, size is %d \n", index, size);
 			return false;
 		}
-		for (int i = 0; i < index - 1;i++)
+		for (int i = 0; i < index - 1; i++)
 		{
 			preNode = preNode->next;
 		}
@@ -164,7 +163,7 @@ public:
 		LinkNode<T> *preNode = NULL;
 		LinkNode<T> *curNode = head->next;
 		LinkNode<T> *tempNode;
-		while(curNode)
+		while (curNode)
 		{
 			tempNode = curNode->next;
 			printf("make value %d reverse\n", curNode->val);
@@ -176,9 +175,49 @@ public:
 		curNode->next = preNode;
 	}
 	//反转链表的部分节点  例：1->2->3->4  left:2  right:3    ----->  1->3->2->4
-	void ReversePartOfList(int leftIndex,int rightIndex)
+	void ReversePartOfList(int leftIndex, int rightIndex)
 	{
-
+		if (leftIndex <= 0 || leftIndex > size || rightIndex <= leftIndex || rightIndex > size)
+		{
+			printf("Index out of range or invalid which Index limits in (0,%d], but now is [%d,%d]\n", size, leftIndex, rightIndex);
+			return;
+		}
+		//首先获取左索引的前节点，右索引的后节点
+		LinkNode<T> *leftNode, *rightNode, *curNode, *preNode, *tempNode, *headNode;
+		curNode = head;
+		preNode = NULL;
+		for (int i = 0; i < rightIndex; i++)
+		{
+			printf("curNode get its next\n");
+			if (i == leftIndex - 1)
+			{
+				printf("make index %d equals leftNode , make index %d equals headNode\n", i, i + 1);
+				leftNode = curNode;
+				headNode = leftNode->next;
+				curNode = curNode->next;
+				continue;
+			}
+			else if (i >= leftIndex)
+			{
+				cout << "reverse index " << i << endl;
+				tempNode = curNode->next;
+				curNode->next = preNode;
+				preNode = curNode;
+				curNode = tempNode;
+				if (i == rightIndex - 1)
+				{
+					printf("make index %d equals reightNode\n", i + 2);
+					rightNode = curNode->next;
+				}
+			}
+			else
+			{
+				curNode = curNode->next;
+				continue;
+			}
+		}
+		leftNode->next = preNode;
+		headNode->next = tempNode;
 	}
 
 private:
@@ -197,6 +236,8 @@ int main()
 	mylist.push_back(5);
 	mylist.printList();
 	mylist.ReverseWholeList();
+	mylist.printList();
+	mylist.ReversePartOfList(2, 4);
 	mylist.printList();
 	system("pause");
 	return 0;
