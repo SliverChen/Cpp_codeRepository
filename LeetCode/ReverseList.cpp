@@ -179,19 +179,21 @@ public:
 	{
 		if (leftIndex <= 0 || leftIndex > size || rightIndex <= leftIndex || rightIndex > size)
 		{
-			printf("Index out of range or invalid which Index limits in (0,%d], but now is [%d,%d]\n", size, leftIndex, rightIndex);
+			printf("Index out of range or invalid which Index limits in (0,%d]",size);
+			printf(", but now is [%d,%d]\n", leftIndex, rightIndex);
 			return;
 		}
 		//首先获取左索引的前节点，右索引的后节点
 		LinkNode<T> *leftNode, *rightNode, *curNode, *preNode, *tempNode, *headNode;
 		curNode = head;
 		preNode = NULL;
-		for (int i = 0; i < rightIndex; i++)
+		for (int i = 0; i <= rightIndex; i++)
 		{
-			printf("curNode get its next\n");
+			printf("curNode equals %d \n",i);
 			if (i == leftIndex - 1)
 			{
-				printf("make index %d equals leftNode , make index %d equals headNode\n", i, i + 1);
+				printf("make index %d equals leftNode",i);
+				printf(", make index %d equals headNode\n",i + 1);
 				leftNode = curNode;
 				headNode = leftNode->next;
 				curNode = curNode->next;
@@ -199,14 +201,14 @@ public:
 			}
 			else if (i >= leftIndex)
 			{
-				cout << "reverse index " << i << endl;
+				printf("make %d linked to %d\n",i,i-1);
 				tempNode = curNode->next;
 				curNode->next = preNode;
 				preNode = curNode;
 				curNode = tempNode;
-				if (i == rightIndex - 1)
+				if (i == rightIndex)
 				{
-					printf("make index %d equals reightNode\n", i + 2);
+					printf("make index %d equals rightNode\n", i + 2);
 					rightNode = curNode->next;
 				}
 			}
@@ -235,10 +237,20 @@ int main()
 	mylist.push_back(4);
 	mylist.push_back(5);
 	mylist.printList();
-	mylist.ReverseWholeList();
-	mylist.printList();
 	mylist.ReversePartOfList(2, 4);
 	mylist.printList();
+
+	myList<int> mylist2;
+	mylist2.push_back(2);
+	mylist2.push_back(4);
+	mylist2.push_back(6);
+	mylist2.push_back(8);
+	mylist2.push_back(10);
+	mylist2.push_back(12);
+	mylist2.push_back(14);
+	mylist2.printList();
+	mylist2.ReversePartOfList(2,5);
+	mylist2.printList();
 	system("pause");
 	return 0;
 }
