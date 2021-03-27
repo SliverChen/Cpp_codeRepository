@@ -48,6 +48,13 @@ struct LinkNode
 	}
 };
 
+//获取数组长度
+template<class T>
+int getLen(const T &array)
+{
+	return sizeof(array) / sizeof(array[0]);
+}
+
 template <class T>
 class myList
 {
@@ -57,6 +64,38 @@ public:
 	{
 		head->next = NULL;
 		size = 0;
+	}
+	
+	myList<T>& operator=(const myList<T> &list2)
+	{
+		LinkNode<T> *CopyNode = list2.getHead()->next;
+		LinkNode<T> *curNode = this->head;
+		while(CopyNode)
+		{
+			LinkNode<T> *NewNode = new LinkNode<T>(CopyNode->val);
+			curNode->next = NewNode;
+			CopyNode = CopyNode->next;
+			curNode = curNode->next;
+			this->size++;
+		}
+		return *this;
+	}
+	
+
+	myList<T>& operator=(const T *array)
+	{
+		int arrLen = getLen(array);
+		printf("array len is %d\n",arrLen);
+		if(arrLen == 0) return *this;
+		LinkNode<T> *curNode = this->head;
+		for(int i=0;i<arrLen;i++)
+		{
+			LinkNode<T> *NewNode = new LinkNode<T>(array[i]);
+			curNode->next = NewNode;
+			curNode = curNode->next;
+			this->size++;
+		}
+		return *this;
 	}
 
 	//获取链表头节点
@@ -227,30 +266,13 @@ private:
 	int size;
 };
 
+
 int main()
 {
 
 	myList<int> mylist;
-	mylist.push_back(1);
-	mylist.push_back(2);
-	mylist.push_back(3);
-	mylist.push_back(4);
-	mylist.push_back(5);
+	mylist = new int[4]{1,2,3,4};
 	mylist.printList();
-	mylist.ReversePartOfList(2, 4);
-	mylist.printList();
-
-	myList<int> mylist2;
-	mylist2.push_back(2);
-	mylist2.push_back(4);
-	mylist2.push_back(6);
-	mylist2.push_back(8);
-	mylist2.push_back(10);
-	mylist2.push_back(12);
-	mylist2.push_back(14);
-	mylist2.printList();
-	mylist2.ReversePartOfList(2,5);
-	mylist2.printList();
-	system("pause");
+	
 	return 0;
 }
