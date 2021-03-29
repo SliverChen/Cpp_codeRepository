@@ -11,8 +11,7 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
-            "MIMode": "gdb",
-            "miDebuggerPath": "gdb.exe",
+            "miDebuggerPath": "gdb.exe",   //位置设置
             "preLaunchTask": "compile",
             "setupCommands": [
                 {

@@ -50,7 +50,7 @@ struct LinkNode
 
 //获取数组长度
 template<class T>
-int getLen(const T &array)
+int getLen(const T *array)
 {
 	return sizeof(array) / sizeof(array[0]);
 }
@@ -82,7 +82,7 @@ public:
 	}
 	
 
-	myList<T>& operator=(const T *array)
+	myList<T>& operator=(const T array)
 	{
 		int arrLen = getLen(array);
 		printf("array len is %d\n",arrLen);
@@ -271,8 +271,8 @@ int main()
 {
 
 	myList<int> mylist;
-	mylist = new int[4]{1,2,3,4};
+	int array[4] = {1, 2, 3, 4};
 	mylist.printList();
-	
+	system("pause");
 	return 0;
 }
