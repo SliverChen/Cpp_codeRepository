@@ -7,66 +7,65 @@ Statement:
     需要设置两个指针对数组进行指向
 */
 
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
 using namespace std;
-
 
 #define MAXCAPACITY 100
 
-template<class T>
+template <class T>
 class MyQueue
 {
-    public:
-        MyQueue()
+public:
+    MyQueue()
+    {
+        front = elements;
+        tail = elements;
+    }
+
+    bool enQueue(T element)
+    {
+        if (tail == &elements[MAXCAPACITY])
         {
-            front = elements;
-            tail = elements;
+            printf("the array is out of range, which the Max capacity is %d\n", MAXCAPACITY);
+            return false;
+        }
+        *tail = element;
+        tail++;
+        return true;
+    }
+
+    bool deQueue()
+    {
+        if (front == tail)
+        {
+            printf(" the queue is empty, which can't do this operation");
+            return false;
         }
 
-        bool enQueue(T element)
-        {
-            if(tail == &elements[MAXCAPACITY])
-            {
-                printf("the array is out of range, which the Max capacity is %d\n",MAXCAPACITY);
-                return false;
-            }
-            *tail = element;
-            tail++;
-            return true;
-        }
+        front--;
+        return true;
+    }
 
-        bool deQueue()
-        {
-            if(front == tail)
-            {
-                printf(" the queue is empty, which can't do this operation");
-                return false;
-            }
+    bool isEmpty()
+    {
+        return front == tail;
+    }
 
-            front--;
-            return true;
-        }
+    int getSize()
+    {
+        return tail - front;
+    }
 
-        bool isEmpty()
-        {
-            return front == tail;
-        }
+    T getFront()
+    {
+        return *front;
+    }
 
-        int getSize()
-        {
-            return tail - front;
-        }
-
-        T getFront()
-        {
-            return *front;
-        }
-
-    private:
-        T elements[MAXCAPACITY];
-        T *front;
-        T *tail;
+private:
+    T elements[MAXCAPACITY];
+    T *front;
+    T *tail;
 };
 
 int main()

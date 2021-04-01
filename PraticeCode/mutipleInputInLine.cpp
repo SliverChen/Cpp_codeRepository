@@ -11,6 +11,7 @@ statement:
                     }
 
         2、use cin.get()!='\n' to finish this operation
+        (this way can input any number we want, stop inputing when we push the botton "Enter")
             particularly:
                 while(cin>>data)
                 {
@@ -20,8 +21,8 @@ statement:
                 }
 */
 
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
 using namespace std;
 
 int main()
@@ -32,13 +33,13 @@ int main()
 
     //way one
     // if we want to input 5 datas into data structure
-    for (int i = 0; i < 5;i++)
+    for (int i = 0; i < 5; i++)
     {
         cin >> data;
         inputData_inway1.push_back(data);
     }
 
-    for(auto data:inputData_inway1)
+    for (auto data : inputData_inway1)
     {
         printf("%d ", data);
     }
@@ -51,7 +52,7 @@ int main()
         if (cin.get() == '\n')
             break;
     }
-    for(auto data:inputData_inway2)
+    for (auto data : inputData_inway2)
     {
         printf("%d ", data);
     }

@@ -18,20 +18,20 @@ Statement:
             merge(a.begin(),a.end(),b.begin(),b.end(),c.begin());   //merge start at c.begin(), not c.end()
 */
 
-#include<iostream>
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <iostream>
+#include <vector>
 using namespace std;
 
 int main()
 {
-    int a[3]={1,2,3};
-    int b[4] ={4,5,6,7};
+    int a[3] = {1, 2, 3};
+    int b[4] = {4, 5, 6, 7};
     int c[7];
-    memcpy(c,a,3*sizeof(int));
-    memcpy(c+3,b,4*sizeof(int));
+    memcpy(c, a, 3 * sizeof(int));
+    memcpy(c + 3, b, 4 * sizeof(int));
     printf("while using memcpy to merge two arrays: \n");
-    for (auto ar:c)
+    for (auto ar : c)
     {
         printf("%d ", ar);
     }
@@ -44,7 +44,7 @@ int main()
     vector<int> c1;
     c1.insert(c1.end(), a1.begin(), a1.end());
     c1.insert(c1.end(), b1.begin(), b1.end());
-    for(auto value:c1)
+    for (auto value : c1)
     {
         printf("%d ", value);
     }
@@ -56,7 +56,7 @@ int main()
     sort(a1.begin(), a1.end());
     sort(b1.begin(), b1.end());
     merge(a1.begin(), a1.end(), b1.begin(), b1.end(), c2.begin());
-    for(auto value:c2)
+    for (auto value : c2)
     {
         printf("%d ", value);
     }
