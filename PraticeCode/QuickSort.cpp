@@ -17,7 +17,6 @@ void QuickSort(vector<int> &array, int left, int right)
     printf("%d and %d QuickSort start\n", left, right);
     if (left >= right)
     {
-        printf("%d and %d QuickSort end\n", left, right);
         return;
     }
 
