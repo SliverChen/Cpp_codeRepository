@@ -23,7 +23,6 @@ int main()
    int *p;
    p = y;
    cout << *p << *(p + 1) << endl;
-   vector<int> a;
    system("pause");
    return 0;
 }

@@ -26,33 +26,41 @@ class MyQueue
 
         bool enQueue(T element)
         {
-            
+            if(tail == &elements[MAXCAPACITY])
+            {
+                printf("the array is out of range, which the Max capacity is %d\n",MAXCAPACITY);
+                return false;
+            }
+            *tail = element;
+            tail++;
             return true;
         }
 
         bool deQueue()
         {
-            
+            if(front == tail)
+            {
+                printf(" the queue is empty, which can't do this operation");
+                return false;
+            }
+
+            front--;
             return true;
         }
 
         bool isEmpty()
         {
-            return elements.size() == 0;
+            return front == tail;
         }
 
         int getSize()
         {
-            return elements.size();
+            return tail - front;
         }
 
-        void printQueue()
+        T getFront()
         {
-            for(auto elem:elements)
-            {
-                printf("%d ", elem);
-            }
-            printf("\n");
+            return *front;
         }
 
     private:
@@ -70,8 +78,9 @@ int main()
     myQueue.enQueue(4);
     myQueue.enQueue(5);
     myQueue.enQueue(6);
-    //myQueue.printQueue();
-    vector<int> a;
+    cout << myQueue.getFront() << endl;
+    myQueue.deQueue();
+    cout << myQueue.getFront() << endl;
     system("pause");
     return 0;
 }
