@@ -11,15 +11,17 @@ Statement:
 #include<vector>
 using namespace std;
 
+
+#define MAXCAPACITY 100
+
 template<class T>
 class MyQueue
 {
     public:
         MyQueue()
         {
-            front = &elements[0];
-            tail = &elements[0];
-            
+            front = elements;
+            tail = elements;
         }
 
         bool enQueue(T element)
@@ -44,11 +46,6 @@ class MyQueue
             return elements.size();
         }
 
-        T front()
-        {
-            return elements[0];
-        }
-
         void printQueue()
         {
             for(auto elem:elements)
@@ -59,9 +56,9 @@ class MyQueue
         }
 
     private:
-        vector<T> elements;
-        int *front;
-        int *tail;
+        T elements[MAXCAPACITY];
+        T *front;
+        T *tail;
 };
 
 int main()
@@ -73,9 +70,8 @@ int main()
     myQueue.enQueue(4);
     myQueue.enQueue(5);
     myQueue.enQueue(6);
-    myQueue.printQueue();
-
+    //myQueue.printQueue();
+    vector<int> a;
     system("pause");
-    getchar();
     return 0;
 }
