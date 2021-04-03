@@ -12,6 +12,7 @@
             The Palindrome string satisfy the property of symmetry
 */
 
+#include <algorithm>
 #include <cstring>
 #include <iostream>
 using namespace std;
@@ -28,15 +29,17 @@ bool isPalindrome(const string &str)
     // by using the property of symmetry, we can divide the string equally
     if (str.size() % 2 == 0) //if str.size() is even
     {
-        middle = str.size() / 2 - 1;
-        left = str[0, middle];                   //the left half part is in [0,index-1]
-        right = str[middle + 1, str.size() - 1]; //the right half part is in[index,str.size()-1]
+        middle = str.size() / 2;
+        left = str.substr(0, middle);               //the left half part is in [0,index-1]
+        right = str.substr(middle, str.size() - 1); //the right half part is in[index,str.size()-1]
+        reverse(right.begin(), right.end());
     }
     else //if str.size() is odd
     {
         middle = str.size() / 2;
-        left = str[0, middle - 1];
-        right = str[middle + 1, str.size() - 1];
+        left = str.substr(0, middle);
+        right = str.substr(middle + 1, str.size() - 1);
+        reverse(right.begin(), right.end());
     }
     if (left == right) //judge if left equals right
     {
@@ -64,27 +67,42 @@ string FindPalindrome(const string &str)
     {
         return str;
     }
-    string substr;
-    int maxlength;
+    string SubString = "";
+    string curstr;
+    int maxlength = 1;
     //the following situation is based on [str.size() >= 2]
-    for (int i = 0; i < str.size() - 1; i++) //fixed left point
+    for (int left = 0; left < str.size() - 1; left++)
     {
-        for (int left = i; left < str.size() - 1; left++)
+        for (int right = left + 1; right <= str.size(); right++)
         {
-            for (int right = left + 1; right < str.size(); right++)
+            if (right < maxlength)
             {
-                        }
+                continue;
+            }
+            curstr = str.substr(left, right);
+            if (isPalindrome(curstr))
+            {
+                if (maxlength < curstr.size())
+                {
+                    SubString = curstr;
+                    maxlength = SubString.size();
+                }
+            }
         }
     }
 
-    return substr;
+    return SubString;
 }
 
 int main()
 {
-    string str = "ababb";
-    string substr = FindPalindrome(str);
-    cout << "the longest Palindrome substring in " << str << " is: " << substr << endl;
+    //string str = "ababb";
+    // string substr = FindPalindrome(str);
+    //cout << "the longest Palindrome substring in " << str << " is: " << substr << endl;
+
+    string str1 = "abccba";
+    string substr1 = FindPalindrome(str1);
+    cout << "the longest Palindrome substring in " << str1 << " is: " << substr1 << endl;
 
     system("pause");
     return 0;
