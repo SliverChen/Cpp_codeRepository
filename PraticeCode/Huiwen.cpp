@@ -2,8 +2,18 @@
     Topic: find the longest HUiwen substring in the string
     Statement:
         1)it can be directly solved by using for-circle to find the suitable substring   Time complexity: O(n^3)
+
         2)while using for-circle, it can optimize the way of implement, which time complexity will be O(n^2)
-        3)it can be solved by using dynamic programming    But dynamic programming is difficult to understand  
+
+        3)it can be solved by using dynamic programming    But dynamic programming is difficult to understand  time complexity: O(n)
+
+        4)the famous algorithm is "manacher algorithm",which also be called "horse pull car algorithm"
+            statement:
+                1)first we should make the length of the string into odd, by using '#' insert
+                    for example:
+                        string 'abba' ---->   string '#a#b#b#a#'    now the length of string is odd.
+                2)then
+
         anyway, step-by-step gogogo
     Think about it:
         Q: 
@@ -15,7 +25,10 @@
 #include <algorithm>
 #include <cstring>
 #include <iostream>
+#include <vector>
 using namespace std;
+
+#define MIN(a, b) ((a > b) ? (b) : (a))
 
 bool isPalindrome(const string &str)
 {
@@ -61,7 +74,7 @@ void checkPalindrome(const string &str)
     }
 }
 
-string FindPalindrome(const string &str)
+string FindPalindrome_violent(const string &str)
 {
     if (str.size() == 1 || str.size() == 0) //if str is a letter or null
     {
@@ -94,6 +107,65 @@ string FindPalindrome(const string &str)
     return SubString;
 }
 
+string FindPalindrome_dynamicProgram(const string &str)
+{
+    if (str.size() == 1 || str.size() == 0)
+    {
+        return str;
+    }
+    string subString;
+    int left, right;
+    int size = str.size();
+}
+
+string FindPalindrome_manacher(const string &str)
+{
+    if (str.size() == 1 || str.size() == 0)
+        return str;
+    string subString, longestString;
+    string newStr;
+    vector<int> RadiusArray;
+    int j = 0;
+    //first we should insert '#' between the nearby letter in str:
+    for (auto ch : str)
+    {
+        newStr[j++] = '#';
+        newStr[j++] = ch;
+    }
+    newStr[j] = '#';
+
+    int mx = 0, id = 0;
+    for (int i = 0; newStr[i] != '\0'; i++)
+    {
+        RadiusArray[i] = mx > i ? MIN(RadiusArray[2 * id - 1], mx - i) : 1;
+        while (newStr[i + RadiusArray[i]] == newStr[i - RadiusArray[i]])
+            RadiusArray[i]++;
+        if (i + RadiusArray[i] > mx)
+        {
+            mx = i + RadiusArray[i];
+            id = i;
+        }
+    }
+    int maxLength = 0, middle = 0;
+    for (int i = 0; i < RadiusArray.size(); i++)
+    {
+        if (maxLength < RadiusArray[i])
+        {
+            maxLength = RadiusArray[i];
+            middle = i;
+        }
+    }
+    subString = newStr.substr(middle, middle + maxLength / 2);
+    int k = 0;
+    for (auto ch : subString)
+    {
+        if (ch == '#')
+            continue;
+        longestString[k++] = ch;
+    }
+    return longestString;
+}
+
 int main()
 {
     //string str = "ababb";
@@ -101,7 +173,7 @@ int main()
     //cout << "the longest Palindrome substring in " << str << " is: " << substr << endl;
 
     string str1 = "abccba";
-    string substr1 = FindPalindrome(str1);
+    string substr1 = FindPalindrome_manacher(str1);
     cout << "the longest Palindrome substring in " << str1 << " is: " << substr1 << endl;
 
     system("pause");
