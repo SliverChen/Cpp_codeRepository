@@ -12,14 +12,16 @@
                 1)first we should make the length of the string into odd, by using '#' insert
                     for example:
                         string 'abba' ---->   string '#a#b#b#a#'    now the length of string is odd.
-                2)then
 
         anyway, step-by-step gogogo
     Think about it:
         Q: 
             if we want to judge one string if it is Palindrome, how to implement it?
-        Tips:
+        Tips1:
             The Palindrome string satisfy the property of symmetry
+        
+        Tips2:
+            Every Palindrome string must have a center index(Assume that string is odd)
 */
 
 #include <algorithm>
@@ -74,6 +76,36 @@ void checkPalindrome(const string &str)
     }
 }
 
+string convert_manacher(const string &str)
+{
+    char *tempStr = new char[2 * str.size() + 1];
+    int size = 0;
+    for (auto ch : str)
+    {
+        tempStr[size++] = '#';
+        tempStr[size++] = ch;
+    }
+    tempStr[size++] = '#';
+    tempStr[size] = '\0';
+    string newStr(tempStr);
+    return newStr;
+}
+
+string return_manacher(const string &str, int left, int right)
+{
+    char *tempStr = new char[right - left + 1];
+    string PreStr;
+    int j = 0;
+    for (int k = left; k < right; k++)
+    {
+        if (str[k] != '#')
+            tempStr[j++] = str[k];
+    }
+    tempStr[j] = '\0';
+    PreStr = tempStr;
+    return PreStr;
+}
+
 string FindPalindrome_violent(const string &str)
 {
     if (str.size() == 1 || str.size() == 0) //if str is a letter or null
@@ -116,54 +148,83 @@ string FindPalindrome_dynamicProgram(const string &str)
     string subString;
     int left, right;
     int size = str.size();
+    return subString;
 }
 
 string FindPalindrome_manacher(const string &str)
 {
     if (str.size() == 1 || str.size() == 0)
         return str;
-    string subString, longestString;
-    string newStr;
-    vector<int> RadiusArray;
-    int j = 0;
-    //first we should insert '#' between the nearby letter in str:
-    for (auto ch : str)
+    //int *test;   //using for test
+    string newStr = convert_manacher(str);
+    int Strlen = newStr.size();
+    int i, id = -1, R = -1, Max = INT_MIN, MaxIndex = 0;
+    int *p = new int[Strlen];
+    /*
+        this algorithm is traversing from the left side and end to the right side
+        so if we can know that there are two index is symmetrical,
+            we can make the right one equals the left one in order to reduce the calculation
+    */
+    for (i = 0; i < Strlen; i++)
     {
-        newStr[j++] = '#';
-        newStr[j++] = ch;
-    }
-    newStr[j] = '#';
-
-    int mx = 0, id = 0;
-    for (int i = 0; newStr[i] != '\0'; i++)
-    {
-        RadiusArray[i] = mx > i ? MIN(RadiusArray[2 * id - 1], mx - i) : 1;
-        while (newStr[i + RadiusArray[i]] == newStr[i - RadiusArray[i]])
-            RadiusArray[i]++;
-        if (i + RadiusArray[i] > mx)
+        if (i > R)
         {
-            mx = i + RadiusArray[i];
+            p[i] = 1; //Initialize palindrome radius(add itself equals one)
+            while ((i + p[i]) < Strlen && (i - p[i]) > -1)
+            {
+                //center on current index
+                if (newStr[i + p[i]] == newStr[i - p[i]]) //calculate length of palindrome
+                {
+                    p[i]++;
+                }
+                else
+                    break;
+            }
+        }
+        else
+        {
+            p[i] = p[2 * id - i] > (R - i) ? (R - i) : p[2 * id - i];
+            while ((i + p[i]) < Strlen && (i - p[i]) > -1)
+            {
+                if (newStr[i + p[i]] == newStr[i - p[i]])
+                {
+                    p[i]++;
+                }
+                else
+                    break;
+            }
+        }
+        //test = &p[i];    //check the data of the radius array
+        if (p[i] + i > R)
+        {
+            R = p[i] + i;
             id = i;
         }
-    }
-    int maxLength = 0, middle = 0;
-    for (int i = 0; i < RadiusArray.size(); i++)
-    {
-        if (maxLength < RadiusArray[i])
+        if (Max < p[i])
         {
-            maxLength = RadiusArray[i];
-            middle = i;
+            Max = p[i];
+            MaxIndex = i;
         }
     }
-    subString = newStr.substr(middle, middle + maxLength / 2);
-    int k = 0;
-    for (auto ch : subString)
+    //print the radius array
+    for (int q = 0; q < Strlen; q++)
     {
-        if (ch == '#')
-            continue;
-        longestString[k++] = ch;
+        printf("%d ", p[q]);
     }
-    return longestString;
+    printf("\n");
+
+    //get the longest palindrome string
+    int left = MaxIndex - p[MaxIndex] + 1;
+    int right = p[MaxIndex] + MaxIndex - 1;
+    string result = return_manacher(newStr, left, right);
+    delete[] p;
+    return result;
+}
+
+void checkManacher(const string &str)
+{
+    string substr = FindPalindrome_manacher(str);
+    cout << "the longest palindrome string in " << str << " is: " << substr << endl;
 }
 
 int main()
@@ -172,10 +233,10 @@ int main()
     // string substr = FindPalindrome(str);
     //cout << "the longest Palindrome substring in " << str << " is: " << substr << endl;
 
-    string str1 = "abccba";
-    string substr1 = FindPalindrome_manacher(str1);
-    cout << "the longest Palindrome substring in " << str1 << " is: " << substr1 << endl;
-
+    //string str1 = "abccba";
+    //checkManacher(str1);
+    string str2 = "abbcbd";
+    checkManacher(str2);
     system("pause");
     return 0;
 }
