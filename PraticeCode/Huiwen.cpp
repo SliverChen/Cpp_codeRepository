@@ -155,7 +155,7 @@ string FindPalindrome_manacher(const string &str)
 {
     if (str.size() == 1 || str.size() == 0)
         return str;
-    //int *test;   //using for test
+    int *test; //using for test
     string newStr = convert_manacher(str);
     int Strlen = newStr.size();
     int i, id = -1, R = -1, Max = INT_MIN, MaxIndex = 0;
@@ -167,7 +167,7 @@ string FindPalindrome_manacher(const string &str)
     */
     for (i = 0; i < Strlen; i++)
     {
-        if (i > R)
+        if (i > R) //if index is bigger than the leftest edge
         {
             p[i] = 1; //Initialize palindrome radius(add itself equals one)
             while ((i + p[i]) < Strlen && (i - p[i]) > -1)
@@ -181,7 +181,7 @@ string FindPalindrome_manacher(const string &str)
                     break;
             }
         }
-        else
+        else //if index is in the edge
         {
             p[i] = p[2 * id - i] > (R - i) ? (R - i) : p[2 * id - i];
             while ((i + p[i]) < Strlen && (i - p[i]) > -1)
@@ -194,7 +194,7 @@ string FindPalindrome_manacher(const string &str)
                     break;
             }
         }
-        //test = &p[i];    //check the data of the radius array
+        test = &p[i]; //check the current Index data of the radius array
         if (p[i] + i > R)
         {
             R = p[i] + i;
@@ -235,7 +235,7 @@ int main()
 
     //string str1 = "abccba";
     //checkManacher(str1);
-    string str2 = "abbcbd";
+    string str2 = "abbbcbbba";
     checkManacher(str2);
     system("pause");
     return 0;
