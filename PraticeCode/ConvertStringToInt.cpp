@@ -1,65 +1,66 @@
 /*
     Topic:
         Convert string to Integer
+    Statement:
+        we will use DFA(deterministic finite automaton) to solve this problem
 */
 
-#include <cmath>
 #include <cstring>
 #include <iostream>
-#include <typeinfo>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 
-#define MAX_EDGE pow(2, 31) - 1
-
-int convertCharToInt(const char &ch)
+class Automaton
 {
-    int temp = int(ch);
-    return temp - 48;
-}
-
-int ConvertInt(const string &str)
-{
-    char first = str[0];
-    if (first != ' ' || first < '0' || first > '9')
-        return 0;
-    long result = 0;
-    int multiple = 0;
-    bool flag = true, isNumber = false;
-    const char *test;
-    for (auto ch = str.rbegin(); ch != str.rend(); ch++)
+    string state = "start";
+    unordered_map<string, vector<string>> table = {
+        {"start", {"start", "signed", "in_number", "end"}},
+        {"signed", {"end", "end", "in_number", "end"}},
+        {"in_number", {"end", "end", "in_number", "end"}},
+        {"end", {"end", "end", "end", "end"}}};
+    int get_col(char c)
     {
-        if (*ch < '0' || *ch > '9')
-        {
-            if (isNumber && *ch == '-')
-            {
-                if (!flag)
-                    result += 1;
-                result = -result;
-                break;
-            }
-            continue;
-        }
-        isNumber = true;
-        //the type of pow(x,y) is double,
-        // we need to use forced type conversion to make it convert to integer----->(int)pow(x,y)
-        result += convertCharToInt(*ch) * (long)pow(10, multiple);
-        if (result > MAX_EDGE)
-        {
-            result = MAX_EDGE;
-            flag = false;
-            break;
-        }
-        multiple++;
+        if (isspace(c))
+            return 0;
+        if (c == '+' or c == '-')
+            return 1;
+        if (isdigit(c))
+            return 2;
+        return 3;
     }
-    return (int)result;
+
+public:
+    int sign = 1;
+    long long ans = 0;
+    void get(char c)
+    {
+        state = table[state][get_col(c)];
+        if (state == "in_number")
+        {
+            ans = ans * 10 + c - '0';
+            ans = sign == 1 ? min(ans, (long long)INT_MAX) : min(ans, -(long long)INT_MIN);
+        }
+        else if (state == "signed")
+        {
+            sign = c == '+' ? 1 : -1;
+        }
+    }
+};
+
+int ConvertStringToInt(const string &str)
+{
+    Automaton automaton;
+    for (char c : str)
+        automaton.get(c);
+    return automaton.sign * automaton.ans;
 }
 
 int main()
 {
-    string str = "-42";
-    int result = ConvertInt(str);
-    cout << str << " converts to integer is: " << result << endl;
-
+    string s = "123123123123";
+    int result = ConvertStringToInt(s);
+    cout << result << endl;
     system("pause");
     return 0;
 }
