@@ -24,7 +24,11 @@ int convertStringToInt(const string &str)
     for (auto ch : str)
     {
         if (ch == ' ')
+        {
+            if (isNumber || isSigned)
+                break;
             continue;
+        }
         else if (ch >= '0' && ch <= '9')
         {
             isNumber = true;
