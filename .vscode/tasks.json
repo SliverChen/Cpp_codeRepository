@@ -7,7 +7,7 @@
             "command": "g++",
             "args": [
                 "-g",
-                "-mwindows",
+                //"-mwindows", //用于windows编程
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
