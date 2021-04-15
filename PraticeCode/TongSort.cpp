@@ -60,7 +60,6 @@ void BucketSort(vector<int> &arr)
             curNum = getNumberofDigits(value, time);
             bucket[curNum].push_back(value);
         }
-
         //从编号0-9依次将桶中的数据存放到tempArr中
         for (int i = 0; i < 10; i++)
         {
@@ -74,7 +73,8 @@ void BucketSort(vector<int> &arr)
 
         //清空tempArr和bucket用于下一次的循环
         tempArr.clear();
-        for (auto array : bucket)
+
+        for (auto &array : bucket) //这里需要注意加上引用才能正常对bucket中的数组进行清空操作
         {
             array.clear();
         }
@@ -83,7 +83,7 @@ void BucketSort(vector<int> &arr)
 
 int main()
 {
-    vector<int> arr = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+    vector<int> arr = {1, 2434646, 56, 734, 5345, 456, 42, 34, 245, 64562, 3423, 44, 56, 4523, 4, 234, 7, 4723, 4, 324, 57, 4};
     printf("the previous array is as follows:\n");
     for (auto value : arr)
     {
@@ -99,6 +99,7 @@ int main()
         printf("%d ", value);
     }
     printf("\n");
+
     system("pause");
     return 0;
 }
