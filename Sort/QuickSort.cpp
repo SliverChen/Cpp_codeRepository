@@ -41,7 +41,7 @@ void QuickSort(vector<int> &array, int left, int right)
     }
 
     int i = left, j = right - 1;
-    while (i <= j)
+    while (i <= j) //if here is  i < j, then it can not solve the situation which the array has two elements
     {
         while (array[j] >= median && i <= j) //find the value that is smaller than the median on the right half part
             j--;
