@@ -75,8 +75,8 @@ public:
     {
         swap(elements[0], elements[size - 1]);
         elements.pop_back();
-        downFilter(0);
         size--;
+        downFilter(0);
         return true;
     }
 
@@ -153,33 +153,6 @@ private:
     }
 };
 
-template <class T>
-class MaxHeap_List : public MaxHeap<T>
-{
-    MaxHeap_List()
-    {
-        size = 0;
-        root->next = NULL;
-    }
-    bool push(T elem)
-    {
-
-        return true;
-    }
-    bool pop()
-    {
-        return true;
-    }
-
-    void Upfilter()
-    {
-    }
-
-private:
-    int size;
-    HeapNode<T> *root;
-};
-
 int main()
 {
     MaxHeap_Vector<int> myheap;
@@ -197,8 +170,6 @@ int main()
     myheap.pop();
     myheap.printHeap();
 
-    printf("the least element in myheap is %d\n", myheap.getMin());
-    printf("get the index of element 4 in myheap: %d\n", myheap.getIndex(4));
     system("pause");
     return 0;
 }
