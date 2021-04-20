@@ -1,19 +1,11 @@
+#ifndef HEADFILE
+#define HEADFILE
 #include "myAvlTree.h"
 #include <algorithm>
 #include <iostream>
+#include <windows.h>
 using namespace std;
-
-//get maximum node
-template <class T>
-node_t *&AvlTree<T>::FindMax(node_t *&t)
-{
-}
-
-//get minimum node
-template <class T>
-node_t *&AvlTree<T>::FindMin(node_t *&t)
-{
-}
+#endif
 
 //clear
 template <class T>
@@ -86,6 +78,23 @@ void AvlTree<T>::doubleWithRightChild(node_t *&k3)
 template <class T>
 void AvlTree<T>::balance(node_t *&t)
 {
+    if (t == nullptr)
+        return;
+    if (GetHeight(t->left) - GetHeight(t->right) > ALLOW_IMBALANCE)
+    {
+        if (GetHeight(t->left->left) >= GetHeight(t->left->right))
+            rotateWithLeftChild(t);
+        else
+            doubleWithLeftChild(t);
+    }
+    else if (GetHeight(t->right) - GetHeight(t->left) > ALLOW_IMBALANCE)
+    {
+        if (GetHeight(t->right->right) >= GetHeight(t->right->left))
+            rotateWithRightChild(t);
+        else
+            doubleWithRightChild(t);
+    }
+    t->height = max(GetHeight(t->left), GetHeight(t->right)) + 1;
 }
 
 template <class T>
@@ -144,9 +153,50 @@ void AvlTree<T>::Remove(const T &elem, node_t *&t)
 template <class T>
 bool AvlTree<T>::Contains(const T &elem) const
 {
+    return contains(elem, root);
 }
 
 template <class T>
-void AvlTree<T>::Traversal()
+bool AvlTree<T>::contains(const T &elem, node_t *&t) const
 {
+    if (t == nullptr)
+        return false;
+    if (t->val < elem)
+        return contains(elem, t->right);
+    else if (t->val > elem)
+        return contains(elem, t->left);
+    else
+        return true;
+}
+
+template <class T>
+void AvlTree<T>::Traversal(const int &choose)
+{
+    if (choose == 1)
+        In_order_traversal(root);
+    else if (choose == 2)
+        Pre_order_traversal(root);
+    else
+        printf("Invalid number\n");
+    printf("\n");
+}
+
+template <class T>
+void AvlTree<T>::In_order_traversal(node_t *&t)
+{
+    if (t == nullptr)
+        return;
+    printf("%d ", t->val);
+    In_order_traversal(t->left);
+    In_order_traversal(t->right);
+}
+
+template <class T>
+void AvlTree<T>::Pre_order_traversal(node_t *&t)
+{
+    if (t == nullptr)
+        return;
+    Pre_order_traversal(t->left);
+    printf("%d ", t->val);
+    Pre_order_traversal(t->right);
 }

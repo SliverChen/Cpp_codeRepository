@@ -5,7 +5,6 @@
     Explanation:
         imitate the code that i have written before(it is Mr.Wang's structure, which i should learn to)
 */
-#include <utility>
 template <class T>
 class AvlTree
 {
@@ -18,8 +17,6 @@ class AvlTree
         AvlNode *right;
         AvlNode(const T &ele)
             : val(ele), left(nullptr), right(nullptr), height(0) {}
-        AvlNode(const T &&ele)
-            : val(std::move(ele)), left(nullptr), right(nullptr), height(0) {}
     };
 
 public:
@@ -41,7 +38,7 @@ public:
 
     void clear(); //清空
 
-    void Traversal(); //遍历
+    void Traversal(const int &choose); //遍历(1->中序遍历；2->前序遍历)
 
 private:
     static const int ALLOW_IMBALANCE = 1;
@@ -53,6 +50,12 @@ private:
     void Insert(const T &elem, node_t *&t); //插入
 
     void Remove(const T &elem, node_t *&t); //删除
+
+    bool contains(const T &elem, node_t *&t) const; //查找
+
+    void In_order_traversal(node_t *&t); //中序遍历
+
+    void Pre_order_traversal(node_t *&t); //前序遍历
 
     int GetHeight(node_t *&t); //获取节点高度
 
@@ -66,7 +69,10 @@ private:
 
     void doubleWithRightChild(node_t *&k3); //右节点双旋转
 
-    node_t *&FindMin(node_t *&t); //寻找最小节点
-
-    node_t *&FindMax(node_t *&t); //寻找最大节点
+    node_t *&FindMin(node_t *&t) //获取最小节点
+    {
+        if (t->left == nullptr)
+            return t;
+        return FindMin(t->left);
+    }
 };
