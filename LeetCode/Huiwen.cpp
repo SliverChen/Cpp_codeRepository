@@ -141,14 +141,46 @@ string FindPalindrome_violent(const string &str)
 
 string FindPalindrome_dynamicProgram(const string &str)
 {
-    if (str.size() == 1 || str.size() == 0)
-    {
+    int strlen = str.size();
+    if (strlen < 2)
         return str;
+
+    int maxLen = 1;
+    int begin = 0;
+
+    //dp[i][j] signs s[i..j] if is Hui wen string
+    vector<vector<int>> dp(strlen, vector<int>(strlen));
+
+    //Initialize the string which length is one
+    for (int i = 0; i < strlen; i++)
+        dp[i][i] = true;
+
+    //start
+    for (int L = 2; L <= strlen; L++)
+    {
+        for (int i = 0; i < strlen; i++)
+        {
+            //the right edge can be gotten by L and i : j - i + 1 = L
+            int j = L + i - 1;
+            if (j >= strlen)
+                break;
+            if (str[i] != str[j])
+                dp[i][j] = false;
+            else
+            {
+                if (j - i < 3)
+                    dp[i][j] = true;
+                else
+                    dp[i][j] = dp[i + 1][j - 1];
+            }
+            if (dp[i][j] && j - i + 1 > maxLen)
+            {
+                maxLen = j - i + 1;
+                begin = i;
+            }
+        }
     }
-    string subString;
-    int left, right;
-    int size = str.size();
-    return subString;
+    return str.substr(begin, maxLen);
 }
 
 string FindPalindrome_manacher(const string &str)
@@ -227,6 +259,12 @@ void checkManacher(const string &str)
     cout << "the longest palindrome string in " << str << " is: " << substr << endl;
 }
 
+void checkDynamicProgram(const string &str)
+{
+    string substr = FindPalindrome_dynamicProgram(str);
+    cout << "the longest palindrome string in " << str << " is: " << substr << endl;
+}
+
 int main()
 {
     //string str = "ababb";
@@ -237,6 +275,8 @@ int main()
     //checkManacher(str1);
     string str2 = "abbbcbbba";
     checkManacher(str2);
+    checkDynamicProgram(str2);
+
     system("pause");
     return 0;
 }
