@@ -13,22 +13,22 @@
 using namespace std;
 
 template <class T>
-class myStack
+class myStack //abstract class
 {
 public:
     bool isEmpty()
     {
         return size == 0;
     }
-    virtual void push(T element) {}
-    virtual void pop() {}
-    virtual T getTop() { return T(); }
-    virtual void printStack() {}
+    virtual void push(T element) = 0;
+    virtual void pop() = 0;
+    virtual T getTop() = 0;
+    virtual void printStack() = 0;
     int size;
 };
 
 template <class T>
-class myVector_Stack : public myStack<T>
+class myVector_Stack : public myStack<T> //inherited class
 {
 public:
     myVector_Stack()
@@ -67,7 +67,7 @@ private:
 };
 
 template <class T>
-class myList_Stack : public myStack<T>
+class myList_Stack : public myStack<T> //inherited class
 {
 public:
     myList_Stack()
