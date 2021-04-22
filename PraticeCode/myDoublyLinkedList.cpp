@@ -4,6 +4,9 @@
     Create file date:   2021/4/21 21:13
 */
 
+#include <iostream>
+using namespace std;
+
 template <class T>
 class DoublyList;
 
@@ -35,9 +38,10 @@ public:
     void Remove(const T &elem);
     void InsertHead(const T &elem);
     bool Contains(const T &elem);
+    void traversal();
 
 private:
-    DoubleListNode *head;
+    node_t *head;
 };
 
 /***********************DoubleListNode member achieve***************************/
@@ -53,7 +57,6 @@ DoubleListNode<T>::DoubleListNode(const T &elem)
 template <class T>
 DoubleListNode<T>::~DoubleListNode()
 {
-    delete this;
 }
 
 template <class T>
@@ -76,14 +79,16 @@ DoublyList<T>::DoublyList()
 template <class T>
 DoublyList<T>::~DoublyList()
 {
-    head.clear(head);
+    head->clear(head);
 }
 
 template <class T>
 void DoublyList<T>::Insert(const T &elem)
 {
     if (head == nullptr)
-        head->val = elem;
+    {
+        head = new node_t(elem);
+    }
     else
     {
         node_t *curNode = head;
@@ -160,4 +165,50 @@ bool DoublyList<T>::Contains(const T &elem)
         }
         return false;
     }
+}
+
+template <class T>
+void DoublyList<T>::traversal()
+{
+    if (head == nullptr)
+        return;
+    node_t *curNode = head;
+    while (curNode)
+    {
+        printf("%d ", curNode->val);
+        curNode = curNode->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    DoublyList<int> myDoublyList;
+    myDoublyList.Insert(4);
+    myDoublyList.Insert(1);
+    myDoublyList.Insert(2);
+    myDoublyList.Insert(5);
+    myDoublyList.Insert(3);
+    myDoublyList.Insert(6);
+    myDoublyList.Insert(7);
+
+    //*1
+    myDoublyList.traversal();
+
+    myDoublyList.Remove(2);
+
+    //*2
+    myDoublyList.traversal();
+
+    myDoublyList.Remove(4);
+
+    //*3
+    myDoublyList.traversal();
+
+    myDoublyList.InsertHead(2);
+
+    //*4
+    myDoublyList.traversal();
+    system("pause");
+    return 0;
 }
