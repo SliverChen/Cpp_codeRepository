@@ -4,4 +4,5 @@
     Create File date: 2021 / 4 / 22
 */
 
-#include <iostram>
+#include <iostream>
+using namespace std;

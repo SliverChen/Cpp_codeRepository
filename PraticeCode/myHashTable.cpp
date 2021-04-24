@@ -57,11 +57,6 @@ bool MyHashTable<T>::Contains(const T &elem)
 template <class T>
 void MyHashTable<T>::traversal()
 {
-    for (auto elem : elements)
-    {
-        printf("%d ", elem);
-    }
-    printf("\n");
 }
 
 template <class T>
