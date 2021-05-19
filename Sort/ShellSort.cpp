@@ -2,6 +2,7 @@
     Topic: Shell Sort
 */
 
+#include <cmath>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -34,19 +35,24 @@ void InsertSort(vector<int> &arr)
 void ShellSort(vector<int> &arr)
 {
     //从小到大
-    int delta = arr.size() / 2;
-    while (delta > 0)
+    int delta = 0;
+
+    int n = arr.size();
+    while (delta < n / 2)
+        delta = 2 * delta + 1;
+
+    while (delta >= 1)
     {
-        if (delta == 1)
+        for (int i = 0; i < ceil((double)n / (double)delta); i++) //遍历每组并对每组进行一次插入排序
         {
-            InsertSort(arr);
-            break;
-        }
-        for (int i = 0; i < arr.size() - delta; i++)
-        {
-            if (arr[i] > arr[i + delta])
+            for (int k = i + delta; k < n; k += delta)
             {
-                swap(arr[i], arr[i + delta]);
+                int j = k;
+                while (arr[j] < arr[j - delta] && j - delta >= 0)
+                {
+                    swap(arr[j], arr[j - delta]);
+                    j -= delta;
+                }
             }
         }
         delta = delta / 2;

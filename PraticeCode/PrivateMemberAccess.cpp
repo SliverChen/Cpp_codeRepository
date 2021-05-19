@@ -7,7 +7,7 @@
                 in this way, if the accessed class is defined previously compared to the class that wants to access
                 before the accessed class, we should defined that xxx is a class type
 
-                the example is as follows example
+                the example is as follows
 */
 
 #include <iostream>
