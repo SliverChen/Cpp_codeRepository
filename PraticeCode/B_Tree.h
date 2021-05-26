@@ -1,70 +1,97 @@
 /*
-    Topic:  B-tree 实现
+    Topic:  B-Tree 实现
     Author: Sliverchen
-    Create file date : 2021 / 5 / 19
+    Create file date: 2021 / 5 / 19
 */
-#ifndef BTREE_CLASS
-#define BTREE_CLASS
 
-static const int M = 3;
+#pragma once
+#ifndef BTREE_H_INCLUDED
+#define BTREE_H_INCLUDED
 
-struct BTNode
+const int m = 3;
+
+typedef int KeyType;
+
+typedef enum Status
 {
-    int keyNum;                  //关键字个数
-    int key[2 * M - 1];          //关键字数组
-    struct BTNode* child[2 * M]; //子节点数组
-    bool isLeaf;                 //是否为叶子节点
-};
+    ERROR = 0,
+    SUCCESS = 1
+} Status;
 
-
-class BTree
+typedef struct BTNode
 {
-public:
-    typedef BTNode node;
+    int keyNum;                //关键字数量
+    KeyType key[m + 1];        //结点的关键字数组
+    struct BTNode *parent;     //结点的父亲节点
+    struct BTNode *ptr[m + 1]; //结点的子节点
+} BTNode, *BTree;
 
-public:
-    BTree();
-    ~BTree();
-    node* Find(int key, int& index); //一般性的查找操作
-    void insert(int key);            //一般性的插入操作
-    void remove(int key);            //一般性的删除操作
-    void printRow();                 //按层级打印
+/*
+    功能1：在B树中查找关键字为k的结点并返回到re中
+    包含的函数：
+        SearchBTree
+        SearchKey
+    返回的结构：
+        result：
+            pt：结点
+            i：关键字在结点中的子序
+            tag：表示能否查找成功
+*/
+typedef struct
+{
+    BTree pt; //指向找到的结点
+    int i;    //在节点中关键字的子序  (1 <= i <= m)
+    int tag;  //表示能否查找成功
+} result;
+Status SearchBTree(BTree t, KeyType k, result &re);
+int searchKey(BTree node, KeyType k); //二分查找
 
-private:
-    node* root;
+/*
+    功能2：在B树中插入一个关键字k
+    包含的函数：
+        InsertBTree(BTree &root,KeyType k)：主实现函数
+        InsertNode(BTree &root,int KeySite,KeyType k,BTree &node)：在B树某一层插入一个关键字，其中node是root对应的孩子
+        SplitToTwo(BTree &root,BTree &SplitRight)：分割节点，一半留在root，一般留在node
+        NewBroot(BTree &root,BTree left,BTree right,KeyType k)：生成一个新根
+*/
+Status InsertBTree(BTree &root, KeyType k);
+Status SplitToTwo(BTree &root, BTree &SplitRight);
+Status NewBroot(BTree &root, BTree left, BTree right, KeyType k);
+Status InsertNode(BTree &root, int KeySite, KeyType k, BTree &node);
 
-    //在关键字少于2M-1的时候插入
-    void InsertNonFull(node* pNode, int key);
+/*
+    功能3：在B树中删除关键字k
+    包含的函数:
+        DeleteBTree(BTree &root,KeyType k)：著实现函数
+        DeleteNode(BTree &node,int KeySite)：删除位置在KeySite的结点
+        Restore(BTree &node)：  
+        Merge(BTree &left,BTree &right,BTree &parent)： //合并结点
+*/
+Status DeleteBTree(BTree &root, KeyType k);
+Status DeleteNode(BTree &node, int KeySite);
+Status Restore(BTree &node);
+Status Merge(BTree &left, BTree &right, BTree &parent);
 
-    //当child结点有2M-1个关键字时，分裂此结点
-    void SplitChild(node* parent, int i, node* child);
+/*
+    功能4：打印B树
+    包含的函数：
+        Aoprint(BTree T,int depth)：利用凹入表打印B树
+        AscOrderTraverse(BTree T)：升序遍历
+        DesOrderTraverse(BTree T)：降序遍历
+        Depth(BTree T)：获取结点T的深度
+        Leaves(BTree T)：获取结点T的叶子数
+*/
+void Aoprint(BTree T, int depth);
+void AscOrderTraverse(BTree &T);
+void DesOrderTraverse(BTree &T);
+int Depth(BTree &T);
+int Leaves(BTree &T);
 
-    //两个关键字数为M-1的结点合并
-    void merge(node* parent, node* pNode1, node* pNode2, int index);
-
-    //找到比pNode结点第一个关键字小的最大关键字（前驱节点）
-    int predecessor(node* pNode);
-
-    //找到比pNode结点最后一个关键字大的最小关键字（后继节点）
-    int successor(node* pNode);
-
-    //pNode1向parent要一个结点key[index]，parent向pNode0要一个结点，pNode1关键字个数为M-1
-    void ExchangeLeftNode(node* parent, node* pNode0, node* pNode1, int index);
-
-    //pNode2向parent要一个结点key[index]，parent向pNode1要一个节点，pNode2关键字为M-1
-    void ExchangeRightNode(node* parent, node* pNode1, node* pNode2, int index);
-
-    //删除关键字个数不少于M的结点
-    void RemoveNonLess(node* pNode, int key);
-
-    //模拟磁盘写入操作（数据库的存储）
-    void DiskWrite(node* pNode);
-
-    //模拟磁盘读取操作（数据库的读取）
-    void DiskRead(node* pNode);
-
-    //找到关键字key所在的结点和关键字索引
-    node *Search(node* pNode, int key, int& index);
-};
+/*
+    功能5：销毁B树
+    包含的函数:
+        Destroy(BTree &T)：销毁B树
+*/
+void Destroy(BTree &T);
 
 #endif
